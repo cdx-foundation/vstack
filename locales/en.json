@@ -1,0 +1,20 @@
+{
+  "app": {
+    "title": "VStack + Solid",
+    "description": "A premium starting point for your FiveM NUI applications. Built with speed and aesthetics in mind.",
+    "edit_instruction": "Edit src/App.tsx and save to test HMR"
+  },
+  "ui": {
+    "test_reactivity": "Test Reactivity",
+    "increment_counter": "Increment Counter",
+    "production_ready": "Production Ready",
+    "close": "Close"
+  },
+  "common": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "footer": {
+    "made_with": "Made with love by the Starling City Development team"
+  }
+}

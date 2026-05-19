@@ -1,0 +1,112 @@
+@import "tailwindcss";
+@import "starling-components";
+
+@theme {
+  --color-primary: var(--primary);
+  --color-surface: var(--bg-surface);
+  --color-stroke: var(--border-main);
+  --color-fg: var(--fg-main);
+  --color-muted: var(--text-muted);
+  --color-overlay: var(--bg-overlay);
+
+  --radius-card: 12px;
+
+  --shadow-glow: 0 0 20px rgba(185, 28, 28, 0.3);
+  --shadow-glow-hover: 0 0 35px rgba(185, 28, 28, 0.5);
+}
+
+@layer utilities {
+  .btn-glow {
+    box-shadow: var(--shadow-glow);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  .btn-glow:hover {
+    box-shadow: var(--shadow-glow-hover);
+  }
+}
+
+@layer base {
+  :root {
+    --font-sans:
+      "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    --font-display: "Inter", var(--font-sans);
+    --font-mono:
+      "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+
+    --bg-main: #f2f2f2;
+    --bg-panel: #ffffff;
+    --bg-surface: #f7f7f7;
+    --bg-surface-50: rgba(247, 247, 247, 0.5);
+
+    --fg-main: #1a1a1a;
+    --text-muted: #888888;
+    --border-main: #e5e5e5;
+
+    --primary: #b91c1c;
+    --primary-rgb: 185, 28, 28;
+    --primary-10: rgba(185, 28, 28, 0.1);
+    --primary-20: rgba(185, 28, 28, 0.2);
+    --primary-40: rgba(185, 28, 28, 0.4);
+
+    --bg-overlay: rgba(0, 0, 0, 0.05);
+
+    color-scheme: light;
+  }
+
+  .dark {
+    --bg-main: #0c0c0e;
+    --bg-panel: #141416;
+    --bg-surface: #1e1e21;
+    --bg-surface-50: rgba(30, 30, 33, 0.5);
+
+    --fg-main: #e4e4e7;
+    --text-muted: #82828c;
+    --border-main: #27272a;
+
+    --primary: #ef4444;
+    --primary-rgb: 239, 68, 68;
+    --primary-10: rgba(239, 68, 68, 0.1);
+    --primary-20: rgba(239, 68, 68, 0.2);
+    --primary-40: rgba(239, 68, 68, 0.4);
+
+    --bg-overlay: rgba(12, 12, 14, 0.8);
+
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: transparent;
+    color: var(--fg-main);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    scrollbar-gutter: stable;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--fg-main);
+  }
+
+  /* Project specific overrides */
+  .dark input,
+  .dark textarea {
+    color-scheme: dark;
+  }
+
+  .bg-overlay {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
