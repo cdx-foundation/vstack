@@ -12,8 +12,6 @@ export const BREAKPOINTS = {
   '2xl': 1536,
 } as const;
 
-export type Breakpoint = keyof typeof BREAKPOINTS;
-
 function createResponsiveCoordinator() {
   const [width, setWidth] = createSignal(window.innerWidth);
 
@@ -57,7 +55,7 @@ function createResponsiveCoordinator() {
   };
 }
 
-export const responsiveCoordinator = createRoot(createResponsiveCoordinator);
+const responsiveCoordinator = createRoot(createResponsiveCoordinator);
 
 /**
  * useResponsive Hook

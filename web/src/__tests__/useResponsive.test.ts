@@ -1,7 +1,7 @@
 // /Users/yanis/Programming/vstack-template/web/src/__tests__/useResponsive.test.ts
 
 import { createRoot } from 'solid-js';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vite-plus/test';
 import { BREAKPOINTS, useResponsive } from '../hooks/useResponsive';
 
 describe('useResponsive', () => {

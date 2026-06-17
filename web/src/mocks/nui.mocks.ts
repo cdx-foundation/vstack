@@ -15,7 +15,7 @@ export const mockResponses = new Map<string, MockHandler>();
  * Registers a mock response for a NUI callback.
  * Used exclusively during development to simulate Lua responses.
  */
-export function registerMock<C extends keyof NuiCallbackContract>(
+function registerMock<C extends keyof NuiCallbackContract>(
   action: C,
   handler: NuiCallbackContract[C]['request'] extends void
     ? () => NuiCallbackContract[C]['response'] | Promise<NuiCallbackContract[C]['response']>
@@ -59,5 +59,3 @@ export const debugEvent = <E extends NuiEvent>(action: E, data: NuiEventPayload[
 /**
  * Simulate network latency for mock responses.
  */
-export const withLatency = <T>(value: T, ms = 500): Promise<T> =>
-  new Promise((resolve) => setTimeout(() => resolve(value), ms));

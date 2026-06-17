@@ -5,12 +5,12 @@ import type { NuiCallbackContract } from '@/types/index';
  * Environment detection for FiveM.
  * `invokeNative` only exists within the CEF context of the game.
  */
-export const isBrowser = !(window as unknown as { invokeNative: unknown }).invokeNative;
+const isBrowser = !(window as unknown as { invokeNative: unknown }).invokeNative;
 
 /**
  * The name of the resource, used in the fetch URL.
  */
-export const resourceName =
+const resourceName =
   (window as unknown as { GetParentResourceName?: () => string }).GetParentResourceName?.() ||
   'nui-res';
 

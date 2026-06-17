@@ -1,9 +1,14 @@
-import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite-plus';
 import solid from 'vite-plugin-solid';
 
-export default defineConfig(() => ({
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// prettier-ignore
+export default defineConfig({
   plugins: [solid(), tailwindcss()],
   esbuild: {
     minifyIdentifiers: true,
@@ -23,7 +28,7 @@ export default defineConfig(() => ({
     emptyOutDir: true,
     sourcemap: false,
     target: 'chrome103',
-    cssMinify: 'lightningcss' as const,
+    cssMinify: 'lightningcss',
     cssCodeSplit: true,
     assetsInlineLimit: 4096,
     modulePreload: {
@@ -31,8 +36,7 @@ export default defineConfig(() => ({
     },
     rollupOptions: {
       output: {
-        // Ensure consistent naming for FiveM asset tracking
-        entryFileNames: 'assets/[name].js', // Removed hash for easier referencing if needed
+        entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]',
       },
@@ -49,4 +53,22 @@ export default defineConfig(() => ({
     setupFiles: [],
     root: 'src',
   },
-}));
+  lint: {
+    ignorePatterns: ['dist/**', 'node_modules/**', '.chromium_profile/**', 'bin/**'],
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
+    rules: {
+      'no-console': ['warn', { allow: ['error', 'warn'] }],
+    },
+  },
+  fmt: {
+    ignorePatterns: ['dist/**', 'node_modules/**', '.chromium_profile/**', 'bin/**'],
+    singleQuote: true,
+    semi: true,
+    indentStyle: 'space',
+    indentWidth: 2,
+    lineWidth: 100,
+  },
+});

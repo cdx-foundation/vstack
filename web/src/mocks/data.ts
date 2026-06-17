@@ -10,12 +10,6 @@ export const mockAppInfo = {
   environment: 'development',
 };
 
-export const mockLocales = {
-  en: 'English',
-  fr: 'Français',
-  de: 'Deutsch',
-};
-
 export const mockItems = [
   { id: 1, label: 'Standard Modular Item', value: 100 },
   { id: 2, label: 'Premium Component', value: 500 },

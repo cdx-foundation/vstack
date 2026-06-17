@@ -63,7 +63,7 @@ class NuiEventGateway {
 }
 
 // Instantiate the single event gateway adapter
-export const nuiEventGateway = new NuiEventGateway();
+const nuiEventGateway = new NuiEventGateway();
 
 /**
  * useNuiEvent Hook
