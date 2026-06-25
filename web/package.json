@@ -19,7 +19,7 @@
     "knip": "knip"
   },
   "dependencies": {
-    "@cdx-foundation/cdx-solidjs-components": "^1.1.0",
+    "@cdx-foundation/cdx-solidjs-components": "^1.1.1",
     "solid-js": "^1.9.13"
   },
   "devDependencies": {
