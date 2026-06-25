@@ -1,19 +1,5 @@
-// /Users/yanis/Programming/vstack-template/web/src/App.tsx
 import { createSignal, Show } from 'solid-js';
-import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Code,
-  Separator,
-  Toaster,
-  useTheme,
-} from 'starling-components';
+import { Badge, Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Code, Separator, Toaster, useTheme } from '@cdx-foundation/cdx-solidjs-components';
 import { appController } from '@/controllers/app.controller';
 import { Background } from './components/Background';
 import { useLocales } from './hooks/useLocales';
@@ -21,10 +7,6 @@ import { useNuiEvent } from './hooks/useNuiEvent';
 import { useResponsive } from './hooks/useResponsive';
 import { NuiEvent } from './types';
 
-/**
- * App - Premium Optimized NUI Interface
- * Refactored for performance and clarity.
- */
 function App() {
   const { toggleTheme, isDark } = useTheme();
   const { t, isLoading } = useLocales();
@@ -55,7 +37,6 @@ function App() {
           }
         >
           <Card class="relative z-10 w-full max-w-lg p-2 flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-500 overflow-hidden">
-            {/* Theme Toggle */}
             <div class="absolute top-6 right-6 z-20">
               <Button
                 variant="ghost"
@@ -138,8 +119,6 @@ function App() {
   );
 }
 
-// Sub-components for better performance and readability
-
 function LogoFS() {
   return (
     <div class="relative group">
@@ -178,8 +157,6 @@ function FooterBadges(props: { t: (key: string, defaultValue?: string) => string
     <div class="flex gap-2 flex-wrap justify-center">
       <Badge
         as="a"
-        href="https://github.com/StarlingCityDevelopment"
-        target="_blank"
         class="hover:text-primary cursor-pointer transition-colors"
       >
         <span class="text-red-500 pr-1">❤️</span>

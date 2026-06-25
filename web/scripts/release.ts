@@ -19,11 +19,9 @@ async function release() {
   );
 
   try {
-    // 1. Build
     logger.info(prefix, 'Compiling production assets via Vite...');
     await exec('bun run build');
 
-    // 2. Prepare temp directory
     logger.info(prefix, 'Staging release files...');
     const tempRoot = join(ROOT_DIR, 'temp');
     const releaseDir = join(tempRoot, resourceName);
@@ -48,14 +46,12 @@ async function release() {
       }
     }
 
-    // Clean up local dist after copy
     const distPath = join(ROOT_DIR, 'dist');
     if (await exists(distPath)) {
       await rm(distPath, { recursive: true, force: true });
       logger.dim(prefix, 'Cleaned up local build artifacts.');
     }
 
-    // 4. Zip
     const hash = isPre
       ? `-${await exec('git rev-parse --short HEAD', { stdio: 'pipe' })
           .then((res) => res.stdout?.trim())
@@ -72,7 +68,6 @@ async function release() {
 
     await exec(zipCmd, { cwd: tempRoot });
 
-    // 5. Finalize
     const stats = await stat(zipPath);
     const sizeMB = (stats.size / 1024 / 1024).toFixed(2);
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);

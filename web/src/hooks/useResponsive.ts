@@ -1,9 +1,5 @@
-// src/hooks/useResponsive.ts
 import { createMemo, createRoot, createSignal } from 'solid-js';
 
-/**
- * Breakpoints matching Tailwind's default configuration
- */
 export const BREAKPOINTS = {
   sm: 640,
   md: 768,
@@ -56,14 +52,6 @@ function createResponsiveCoordinator() {
 }
 
 const responsiveCoordinator = createRoot(createResponsiveCoordinator);
-
-/**
- * useResponsive Hook
- *
- * A high-performance responsive hook for SolidJS.
- * Consumes the centralized responsiveCoordinator, sharing a single
- * window resize event listener to prevent duplicate DOM event bindings.
- */
 export function useResponsive() {
   return responsiveCoordinator;
 }

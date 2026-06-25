@@ -19,14 +19,14 @@
     "knip": "knip"
   },
   "dependencies": {
-    "solid-js": "^1.9.13",
-    "starling-components": "^4.0.0"
+    "@cdx-foundation/cdx-solidjs-components": "^1.1.0",
+    "solid-js": "^1.9.13"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.1",
-    "@types/node": "^25.9.3",
+    "@types/node": "^25.9.4",
     "jsdom": "^29.1.1",
-    "knip": "^6.17.1",
+    "knip": "^6.20.0",
     "puppeteer-core": "^24.43.1",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",

@@ -22,7 +22,6 @@ async function build() {
     logger.info(prefix, 'Triggering Vite production pipeline...');
     await exec('vite build');
 
-    // Remove debug assets that shouldn't be in production
     const distDir = join(WEB_DIR, '../dist');
     const debugBg = join(distDir, 'mock-bg.png');
 

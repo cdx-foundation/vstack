@@ -1,7 +1,3 @@
-/**
- * NUI Callbacks (JS -> Lua)
- * Define callbacks here that are triggered from the frontend using fetchNui.
- */
 export const NuiCallback = {
   hideUI: 'hideUI',
   getItemData: 'getItemData',
@@ -10,9 +6,6 @@ export const NuiCallback = {
 
 export type NuiCallback = (typeof NuiCallback)[keyof typeof NuiCallback];
 
-/**
- * Mapping of NUI callbacks to their request/response contracts.
- */
 export interface NuiCallbackContract {
   [NuiCallback.hideUI]: {
     request: undefined;

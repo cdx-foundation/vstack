@@ -1,9 +1,7 @@
-// src/hooks/useLocales.ts
 import { createMemo, createRoot, createSignal, onMount } from 'solid-js';
 import { createNuiQuery } from '@/lib/fetchClient';
 import { NuiCallback } from '@/types/callbacks';
 
-// Dynamically discover and load all JSON locales at the root level using Vite glob imports
 const modules = import.meta.glob<Record<string, unknown>>('../../../locales/*.json', {
   eager: true,
 });

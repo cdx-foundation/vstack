@@ -1,12 +1,8 @@
-// /Users/yanis/Programming/vstack-template/web/src/controllers/app.controller.ts
 import { createRoot } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { fetchNui } from '@/lib/nui';
 import { NuiCallback } from '@/types';
 
-/**
- * AppController manages visibility state and general NUI communication.
- */
 function createAppController() {
   const [state, setState] = createStore({
     visible: false,
@@ -21,10 +17,6 @@ function createAppController() {
     return fetchNui(NuiCallback.hideUI);
   };
 
-  const getItemData = async (id: number) => {
-    return fetchNui(NuiCallback.getItemData, { id });
-  };
-
   return {
     state,
     setState,
@@ -32,7 +24,6 @@ function createAppController() {
     hide,
     toggle,
     hideUI,
-    getItemData,
   };
 }
 

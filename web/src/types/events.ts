@@ -1,8 +1,3 @@
-/**
- * NUI Event (Lua -> JS)
- * It contains all the events that are sent from the client/server to the NUI (JS).
- */
-
 export const NuiEvent = {
   setVisible: 'setVisible',
   updateData: 'updateData',
@@ -10,7 +5,6 @@ export const NuiEvent = {
 
 export type NuiEvent = (typeof NuiEvent)[keyof typeof NuiEvent];
 
-// Define payloads for each event
 export interface NuiEventPayload {
   [NuiEvent.setVisible]: boolean;
   [NuiEvent.updateData]: {

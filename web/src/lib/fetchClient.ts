@@ -1,4 +1,3 @@
-// src/lib/fetchClient.ts
 import { createSignal } from 'solid-js';
 import type { NuiCallbackContract } from '@/types/index';
 import { fetchNui } from './nui';
@@ -8,13 +7,6 @@ export interface FetchOptions<TResponse> {
   onError?: (error: unknown) => void;
 }
 
-/**
- * createNuiQuery
- *
- * A deep, high-leverage reactive query constructor.
- * Decouples request states (data, loading, error) and execution safety
- * from UI controllers.
- */
 export function createNuiQuery<C extends keyof NuiCallbackContract>(
   action: C,
   options?: FetchOptions<NuiCallbackContract[C]['response']>,

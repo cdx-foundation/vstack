@@ -3,14 +3,8 @@ import type { NuiEvent, NuiEventPayload } from '@/types/index';
 
 type Handler<T = unknown> = (data: T) => void;
 
-/**
- * NuiEventGateway
- *
- * A deep, single-instance gateway module that manages a single global window
- * message listener. Distributes matching incoming NUI events to active subscribers.
- */
 class NuiEventGateway {
-  private handlers = new Map<string, Set<Handler>>();
+  private handlers = new Map<string, Set<Handler<NuiEventPayload>>>();
 
   constructor() {
     if (typeof window !== 'undefined') {
@@ -34,10 +28,6 @@ class NuiEventGateway {
     }
   };
 
-  /**
-   * Subscribes a handler to a specific NUI event action.
-   * Returns a cleanup function to unsubscribe.
-   */
   public subscribe<E extends NuiEvent>(
     action: E,
     handler: Handler<NuiEventPayload[E]>,
@@ -62,15 +52,7 @@ class NuiEventGateway {
   }
 }
 
-// Instantiate the single event gateway adapter
 const nuiEventGateway = new NuiEventGateway();
-
-/**
- * useNuiEvent Hook
- *
- * A high-performance SolidJS hook to listen for events dispatched from FiveM client scripts.
- * Consumes the single global NuiEventGateway seam to avoid duplicate DOM listeners.
- */
 export function useNuiEvent<E extends NuiEvent>(
   action: E,
   handler: (data: NuiEventPayload[E]) => void,
