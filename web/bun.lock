@@ -5,7 +5,7 @@
     "": {
       "name": "five-stack-template",
       "dependencies": {
-        "@cdx-foundation/cdx-solidjs-components": "^1.0.1",
+        "@cdx-foundation/cdx-solidjs-components": "^1.1.0",
         "solid-js": "^1.9.13",
       },
       "devDependencies": {

@@ -11,7 +11,7 @@ export function Background(props: BackgroundProps) {
         opacity: props.isLoading ? '0' : '1',
       }}
     >
-      <div class="absolute inset-0 bg-(--bg-overlay) backdrop-blur-sm" />
+      <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" />
     </div>
   );
 }

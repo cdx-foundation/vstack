@@ -45,9 +45,12 @@ async function bootstrap() {
         root,
       );
       console.log('[Bootstrap] Render complete.');
-      const win = window as unknown as { __MOCKS_READY__?: () => void };
-      if (win.__MOCKS_READY__) {
-        win.__MOCKS_READY__();
+
+      // NuiProvider is now mounted with useNuiEvent subscribers registered.
+      // Hydrate mocks — safe to dispatch events now.
+      if (import.meta.env.DEV) {
+        const { hydrate } = await import('./mocks');
+        hydrate();
       }
     } else {
       console.error('[Bootstrap] #root element not found!');

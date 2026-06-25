@@ -1,38 +1,79 @@
-import { createSignal, Show } from 'solid-js';
-import { Badge, Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Code, Separator, Toaster, useTheme } from '@cdx-foundation/cdx-solidjs-components';
+import { createSignal, onMount, Show } from 'solid-js';
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Code,
+  Separator,
+  Toaster,
+  useTheme,
+} from '@cdx-foundation/cdx-solidjs-components';
 import { appController } from '@/controllers/app.controller';
 import { Background } from './components/Background';
 import { useLocales } from './hooks/useLocales';
 import { useNuiEvent } from './hooks/useNuiEvent';
 import { useResponsive } from './hooks/useResponsive';
-import { NuiEvent } from './types';
+import { fetchNui } from './lib/nui';
+import { NuiCallback, NuiEvent } from './types';
 
 function App() {
-  const { toggleTheme, isDark } = useTheme();
+  const theme = useTheme();
   const { t, isLoading } = useLocales();
   const { state, hideUI } = appController;
   const { isMobile } = useResponsive();
   const [count, setCount] = createSignal(0);
-  const [_nuiData, setNuiData] = createSignal<{
-    label: string;
-    value: number;
-  } | null>(null);
 
   useNuiEvent(NuiEvent.updateData, (data) => {
-    setNuiData(data);
+    // Handle server data update
+    void data;
+  });
+
+  // Default theme until the server pushes its config via getTheme callback
+  // or updateTheme event. Light mode by default.
+  theme.setTheme({
+    dark: false,
+    accent: '#c62828',
+    bg: '#ffffff',
+    panel: '#ffffff',
+    surface: '#f4f4f5',
+    border: '#e4e4e7',
+    fg: '#09090b',
+    muted: '#71717a',
+    radius: '12px',
+    font: 'sans',
+    headerFont: 'sans',
+    shadow: 'md',
+    btnShadow: 'md',
+  });
+
+  // Fetch theme config from server via callback
+  onMount(() => {
+    fetchNui(NuiCallback.getTheme).then((themeConfig) => {
+      if (themeConfig) theme.setTheme(themeConfig);
+    });
+  });
+
+  // Apply dynamic theme updates pushed by the server
+  useNuiEvent(NuiEvent.updateTheme, (data) => {
+    theme.setTheme(data as Record<string, unknown>);
   });
 
   return (
     <Show when={state.visible}>
-      <div class="relative h-screen w-full flex items-center justify-center p-6 sm:p-10 font-sans antialiased">
+      <div class="relative h-screen w-full flex items-center justify-center p-6 sm:p-10 font-sans antialiased bg-black/80">
         <Background isLoading={isLoading()} />
 
         <Show
           when={!isLoading()}
           fallback={
             <div class="relative z-10 animate-pulse flex flex-col items-center gap-4">
-              <div class="h-16 w-16 bg-(--primary-20) rounded-card" />
-              <div class="h-8 w-48 bg-(--bg-surface-50) rounded-card" />
+              <div class="h-16 w-16 rounded-card bg-primary/20" />
+              <div class="h-8 w-48 rounded-card bg-surface/50" />
             </div>
           }
         >
@@ -41,9 +82,9 @@ function App() {
               <Button
                 variant="ghost"
                 class="text-[10px] h-7 font-bold uppercase tracking-widest text-muted hover:text-fg transition-colors"
-                onClick={toggleTheme}
+                onClick={() => theme.toggleTheme()}
               >
-                {isDark() ? t('common.light', 'Light') : t('common.dark', 'Dark')}
+                {theme.isDark() ? t('common.light', 'Light') : t('common.dark', 'Dark')}
               </Button>
             </div>
 
@@ -68,7 +109,7 @@ function App() {
             </CardHeader>
 
             <CardContent class="flex flex-col items-center gap-6 w-full px-10 py-6">
-              <div class="bg-(--bg-surface-50) border border-stroke rounded-card p-4 w-full flex flex-col gap-4">
+              <div class="border border-stroke rounded-card p-4 w-full flex flex-col gap-4 bg-surface/50">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-bold uppercase tracking-widest text-muted">
                     {t('ui.test_reactivity', 'Test Reactivity')}
@@ -104,7 +145,7 @@ function App() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  class="h-6 text-[10px] font-bold uppercase tracking-widest text-muted hover:text-red-500 transition-colors"
+                  class="h-6 text-[10px] font-bold uppercase tracking-widest text-muted hover:text-primary transition-colors"
                   onClick={hideUI}
                 >
                   {t('ui.close', 'Close')}
@@ -122,8 +163,8 @@ function App() {
 function LogoFS() {
   return (
     <div class="relative group">
-      <div class="absolute -inset-10 bg-[radial-gradient(circle,rgba(185,28,28,0.4)_0%,transparent_70%)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div class="h-16 w-16 bg-primary rounded-card flex items-center justify-center shadow-[0_10px_15px_-3px_rgba(185,28,28,0.4)] ring-4 ring-(--primary-10) transition-all hover:scale-110 duration-300 relative z-10">
+      <div class="absolute -inset-10 bg-[radial-gradient(circle,color-mix(in_srgb,var(--primary-color)_40%,transparent)_0%,transparent_70%)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div class="h-16 w-16 bg-primary rounded-card flex items-center justify-center shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--primary-color)_40%,transparent)] ring-4 ring-primary/10 transition-all hover:scale-110 duration-300 relative z-10">
         <span class="font-bold text-white text-xl tracking-tighter">FS</span>
       </div>
     </div>
@@ -133,8 +174,8 @@ function LogoFS() {
 function LogoSolid() {
   return (
     <div class="relative group">
-      <div class="absolute -inset-10 bg-[radial-gradient(circle,rgba(185,28,28,0.4)_0%,transparent_70%)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div class="h-16 w-16 bg-primary rounded-full flex items-center justify-center shadow-[0_10px_15px_-3px_rgba(185,28,28,0.4)] ring-4 ring-(--primary-10) transition-all hover:scale-110 duration-300 animate-[spin_10s_linear_infinite] relative z-10">
+      <div class="absolute -inset-10 bg-[radial-gradient(circle,color-mix(in_srgb,var(--primary-color)_40%,transparent)_0%,transparent_70%)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div class="h-16 w-16 bg-primary rounded-full flex items-center justify-center shadow-[0_10px_15px_-3px_color-mix(in_srgb,var(--primary-color)_40%,transparent)] ring-4 ring-primary/10 transition-all hover:scale-110 duration-300 animate-[spin_10s_linear_infinite] relative z-10">
         <svg
           width="32"
           height="32"
@@ -155,13 +196,10 @@ function LogoSolid() {
 function FooterBadges(props: { t: (key: string, defaultValue?: string) => string }) {
   return (
     <div class="flex gap-2 flex-wrap justify-center">
-      <Badge
-        as="a"
-        class="hover:text-primary cursor-pointer transition-colors"
-      >
-        <span class="text-red-500 pr-1">❤️</span>
-        {props.t('footer.made_with', 'Made with love by the Starling City Development team')}
-        <span class="text-red-500 pl-1">❤️</span>
+      <Badge as="a" class="hover:text-primary cursor-pointer transition-colors">
+        <span class="text-primary pr-1">❤️</span>
+        {props.t('footer.made_with', 'Made with love by the CDX Foundation')}
+        <span class="text-primary pl-1">❤️</span>
       </Badge>
     </div>
   );
@@ -175,7 +213,7 @@ function StatusBadges(props: { t: (key: string, defaultValue?: string) => string
       </Badge>
       <Badge
         variant="outline"
-        class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 border-emerald-500/20 bg-emerald-500/5"
+        class="text-[10px] font-bold uppercase tracking-widest text-positive border-positive/20 bg-positive/5"
       >
         {props.t('ui.production_ready', 'Production Ready')}
       </Badge>

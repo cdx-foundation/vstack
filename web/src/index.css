@@ -1,21 +1,57 @@
+/* Google Fonts imported here (not inside library theme.css) to avoid
+   Lightning CSS ordering warnings — @import must precede all other rules. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=JetBrains+Mono:wght@400..800&family=Archivo+Black&family=Bebas+Neue&family=Oxanium:wght@200..800&display=swap');
+
 @import 'tailwindcss';
-@import '@cdx-foundation/cdx-solidjs-components';
+@plugin "tailwindcss-animate";
+
+/* Tell Tailwind to scan library component files for class name usage */
+@source "../node_modules/@cdx-foundation/cdx-solidjs-components/lib/ui/**/*.tsx";
 
 @theme {
-  --color-primary: var(--primary);
-  --color-surface: var(--bg-surface);
-  --color-stroke: var(--border-main);
-  --color-fg: var(--fg-main);
-  --color-muted: var(--text-muted);
-  --color-overlay: var(--bg-overlay);
-
-  --radius-card: 12px;
-
+  /* ── Project-specific custom tokens ── */
+  --color-overlay: rgba(0, 0, 0, 0.05);
   --shadow-glow: 0 0 20px rgba(185, 28, 28, 0.3);
   --shadow-glow-hover: 0 0 35px rgba(185, 28, 28, 0.5);
+
+  /* ── Library core tokens — replicated here so Tailwind resolves
+        class names like bg-primary, rounded-btn, shadow-btn, etc.
+        Values use CSS variables set at runtime by useTheme(). ── */
+  --color-primary: var(--primary-color, #c62828);
+  --color-primary-hover: color-mix(in srgb, var(--color-primary), black 15%);
+  --color-primary-alpha: color-mix(in srgb, var(--color-primary), transparent 92%);
+  --color-primary-border: color-mix(in srgb, var(--color-primary), transparent 75%);
+
+  --color-bg: var(--bg-main, #ffffff);
+  --color-fg: var(--fg-main, #1a1a1a);
+  --color-stroke: var(--stroke, #e5e5e5);
+  --color-panel: var(--bg-panel, #ffffff);
+  --color-positive: #10b981;
+  --color-muted: var(--text-muted, #888888);
+  --color-surface: var(--bg-surface, #f7f7f7);
+
+  --font-display: var(--display-main, 'Inter', system-ui, sans-serif);
+  --font-sans: var(--sans-main, 'Inter', system-ui, sans-serif);
+  --font-mono: var(--mono-main, 'JetBrains Mono', ui-monospace, monospace);
+
+  --radius-card: var(--radius-card, 0px);
+  --radius-btn: var(--radius-btn, 0px);
+  --radius-pill: var(--radius-pill, 9999px);
+  --radius-input: var(--radius-input, 0px);
+  --radius-badge: var(--radius-badge, 0px);
+  --shadow-btn: var(--shadow-btn, none);
+  --shadow-main: var(--shadow-main, none);
 }
 
 @layer utilities {
+  /* Used by library Card component — needed here because we don't import
+     the library's theme.css directly (avoids Lightning CSS ordering warning). */
+  .clean-panel {
+    background-color: var(--bg-panel, #ffffff);
+    border: 1px solid var(--border-main, #e5e5e5);
+    border-radius: var(--radius-card, 0px);
+  }
+
   .btn-glow {
     box-shadow: var(--shadow-glow);
     transition: box-shadow 0.3s ease-in-out;
@@ -27,49 +63,16 @@
 }
 
 @layer base {
-  :root {
-    --primary-color: #c62828;
-    --primary-rgb: 198, 40, 40;
-    --bg-main: #0f0f0f;
-    --bg-panel: #0f0f0f;
-    --bg-surface: #141415;
-    --fg-main: #efeff0;
-    --text-muted: #5f5f63;
-    --border-main: #1a1a1c;
-    --stroke: #1a1a1c;
-    --ring-main: rgba(0, 0, 0, 0.05);
-    --glass-border: rgba(0, 0, 0, 0.06);
-    --radius-card: 0px;
-    --radius-lg: 0px;
-    --radius-btn: calc(0px - 0.2rem);
-    --radius-input: calc(0px - 0.1rem);
-    --radius-badge: calc(0px - 0.3rem);
-    --shadow-main: none;
-    --shadow-btn: none;
-    --sans-main: "JetBrains Mono", ui-monospace, monospace;
-    --display-main: "Oxanium", sans-serif;
-    --mono-main: "JetBrains Mono", ui-monospace, monospace;
-    color-scheme: light;
-  }
-
-  .dark {
-    --primary-rgb: 198, 40, 40;
-    --bg-main: #0f0f0f;
-    --bg-panel: #0f0f0f;
-    --bg-surface: #141415;
-    --fg-main: #efeff0;
-    --text-muted: #5f5f63;
-    --border-main: #1a1a1c;
-    --stroke: #1a1a1c;
-    --ring-main: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    color-scheme: dark;
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: transparent;
   }
 
   body {
-    background-color: transparent;
     color: var(--fg-main);
-    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow: hidden;
@@ -78,14 +81,24 @@
     line-height: 1.5;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--fg-main);
+  #root {
+    height: 100%;
+  }
+
+  /* Thin scrollbar standard (from library theme) */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--fg-main, #1a1a1a) 10%, transparent);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--fg-main, #1a1a1a) 22%, transparent);
   }
 
   /* Project specific overrides */
